@@ -54,7 +54,7 @@ jobs:
           print(f"PASS: CRPS reduction {crps_reduction:.1f}% is within {tol}pp of {target}%")
           EOF
       - name: Upload executed notebook as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: quickstart-executed
           path: notebooks/00-quickstart.executed.ipynb

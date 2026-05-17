@@ -27,7 +27,7 @@ jobs:
       - name: Compute SHA-256 checksums
         run: sha256sum dist/* > dist/checksums.sha256
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/

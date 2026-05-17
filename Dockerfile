@@ -9,7 +9,7 @@
 #   builder stage, without build tooling, to produce a smaller final image.
 
 # ---- Stage 1: builder ----
-FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04 AS builder
+FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04 AS builder
 
 LABEL org.opencontainers.image.title="SAGA builder stage"
 LABEL org.opencontainers.image.version="1.0.0"
@@ -51,7 +51,7 @@ RUN mamba env create -f environment.yaml -n saga \
 RUN /opt/conda/envs/saga/bin/pip install --no-build-isolation -e .
 
 # ---- Stage 2: runtime ----
-FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04 AS runtime
+FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04 AS runtime
 
 LABEL org.opencontainers.image.title="SAGA"
 LABEL org.opencontainers.image.description="Sequence-Adaptive Generative Architecture for probabilistic earnings forecasting"

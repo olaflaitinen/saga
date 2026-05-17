@@ -1,0 +1,11 @@
+# 2022 Swedish income tax schedule used in the SAGA microsimulation (Table V).
+# All monetary values in nominal 2022 Swedish krona.
+# The varnskatt was abolished in 2020 and is not included.
+
+municipal_tax_rate: 0.324
+state_income_tax_rate: 0.20
+state_income_tax_breakpoint_sek: 554900
+employee_social_security_rate: 0.07
+employee_social_security_cap_income_base_amounts: 8.07
+income_base_amount_sek: 71000
+wealth_tax_rate: 0.0

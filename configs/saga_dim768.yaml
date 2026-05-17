@@ -1,0 +1,39 @@
+# SAGA large model (d=768): ablation A8 from Table VI.
+# CRPS at h=10: 0.319 vs headline 0.318 (+0.3%).
+# Requires more GPU memory; reduce per_device_batch_size if OOM.
+
+model_dim: 768
+num_layers: 6
+num_heads: 8
+ffn_dim: 3072
+max_context_length: 45
+dropout: 0.1
+stochastic_depth_rate: 0.1
+quantile_levels: [0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95]
+
+continuous_dim: 64
+categorical_total_dim: 76
+missingness_dim: 16
+age_embedding_dim: 64
+year_embedding_dim: 32
+
+age_min: 16
+age_max: 64
+year_min: 1990
+year_max: 2022
+
+aux_hidden_dim: 128
+
+learning_rate: 0.0003
+weight_decay: 0.01
+beta1: 0.9
+beta2: 0.999
+warmup_steps: 2000
+total_steps: 300000
+per_device_batch_size: 256
+gradient_accumulation_steps: 8
+grad_clip_max_norm: 1.0
+
+seed: 20260601
+early_stopping_patience: 20
+validation_interval_steps: 5000

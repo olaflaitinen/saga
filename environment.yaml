@@ -1,0 +1,66 @@
+name: saga
+# Pinned conda environment for the SAGA repository.
+# Tested on Python 3.11 with CUDA 12.1 on NVIDIA A100 40 GB.
+# Install with: conda env create -f environment.yaml
+# Activate with: conda activate saga
+# See docs/reproducibility/docker-environment.md for full dependency rationale.
+
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+
+dependencies:
+  # Python runtime (pinned to 3.11; 3.12 is also supported, see pyproject.toml)
+  - python=3.11
+
+  # PyTorch with CUDA 12.1 wheels
+  # Version 2.4 or newer required for torch.compile compatibility with SAGA's
+  # bfloat16 accumulation and Flash Attention 2 optional backend.
+  - pytorch::pytorch>=2.4
+  - pytorch::torchvision>=0.19
+  - nvidia::cuda-toolkit=12.1
+
+  # Scientific computing stack
+  # numpy < 2.0 for stability with downstream dependencies (e.g. lightgbm 4.3)
+  - numpy>=1.26,<2.0
+  - pandas>=2.2
+  - pyarrow>=15
+  - scipy>=1.13
+  - scikit-learn>=1.5
+
+  # Gradient boosting (LightGBM baseline, Section 5 B3)
+  - lightgbm>=4.3
+
+  # Structured logging
+  - structlog>=24.1
+
+  # Data validation (pydantic v2 required for the schema module)
+  - pydantic>=2.6
+
+  # YAML configuration parsing
+  - pyyaml>=6.0
+
+  # Jupyter ecosystem (for notebooks 00-07)
+  - jupyterlab>=4
+  - nbconvert>=7
+  - ipykernel>=6
+
+  # Documentation build toolchain
+  - mkdocs-material>=9.5
+
+  # pip-only packages (not available on conda-forge at the required version)
+  - pip:
+    - mkdocstrings[python]>=0.25
+    - mkdocs-mermaid2-plugin>=1.1
+    # Development and testing stack (included here so the dev environment is
+    # fully self-contained from a single conda env create command)
+    - pytest>=8
+    - pytest-cov>=5
+    - hypothesis>=6.100
+    - ruff>=0.4
+    - black>=24
+    - mypy>=1.10
+    - pre-commit>=3.7
+    - types-PyYAML>=6.0

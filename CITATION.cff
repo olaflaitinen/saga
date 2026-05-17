@@ -1,0 +1,86 @@
+cff-version: 1.2.0
+message: >
+  If you use this software or the associated manuscript results in your
+  research, please cite both the manuscript (preferred-citation below) and
+  this software repository using the metadata in this file.
+title: >
+  SAGA: A Sequence-Adaptive Generative Architecture for Multi-Horizon
+  Probabilistic Forecasting with Adaptive Temporal Conformal Prediction
+version: 1.0.0
+date-released: "2026-05-18"
+license: Apache-2.0
+repository-code: https://github.com/olaflaitinen/saga
+doi: 10.5281/zenodo.20260287
+url: https://github.com/olaflaitinen/saga
+abstract: >
+  SAGA is a sequence-adaptive generative transformer for multi-horizon
+  probabilistic forecasting of individual earnings trajectories in large
+  administrative panel data. Trained on 2,143,817 individuals from the
+  Swedish LISA register (61,284,903 person-year observations, 1990-2022),
+  SAGA achieves a 31.9% CRPS reduction at h=10 and 41.2% at h=20 versus
+  the GKOS benchmark, with 90.3% marginal conformal coverage at the 90%
+  nominal level under Adaptive Temporal Conformal Prediction (Theorem 2).
+authors:
+  - family-names: Laitinen-Fredriksson Lundstrom-Imanov
+    given-names: Gustav Olaf Yunus
+    orcid: https://orcid.org/0009-0006-5184-0810
+    affiliation: >
+      Department of Economics, Stockholm University,
+      SE-106 91 Stockholm, Sweden
+    email: olaf.laitinen@su.se
+  - family-names: Comert
+    given-names: Hafize Gonca
+    orcid: https://orcid.org/0009-0009-3345-8783
+    affiliation: >
+      Institute of Social Sciences, Faculty of Economics and Administrative
+      Sciences, Suleyman Demirel University, 32260 Isparta, Turkey
+keywords:
+  - machine-learning
+  - probabilistic-forecasting
+  - conformal-prediction
+  - transformer
+  - tabular-data
+  - register-data
+  - microsimulation
+  - labor-economics
+  - earnings-dynamics
+  - tpami
+  - reproducibility
+  - pytorch
+  - scientific-software
+preferred-citation:
+  type: article
+  title: >
+    SAGA: A Sequence-Adaptive Generative Architecture for Multi-Horizon
+    Probabilistic Forecasting with Adaptive Temporal Conformal Prediction
+  authors:
+    - family-names: Laitinen-Fredriksson Lundstrom-Imanov
+      given-names: Gustav Olaf Yunus
+      orcid: https://orcid.org/0009-0006-5184-0810
+    - family-names: Comert
+      given-names: Hafize Gonca
+      orcid: https://orcid.org/0009-0009-3345-8783
+  journal: IEEE Transactions on Pattern Analysis and Machine Intelligence
+  year: 2026
+  doi: 10.5281/zenodo.20260287
+  url: https://doi.org/10.5281/zenodo.20260287
+  identifiers:
+    - type: url
+      value: https://arxiv.org/abs/__TBD_ARXIV_ID__
+      description: arXiv preprint
+references:
+  - type: report
+    title: >
+      SAGA: A Sequence-Adaptive Generative Architecture for Multi-Horizon
+      Probabilistic Forecasting with Adaptive Temporal Conformal Prediction
+    authors:
+      - family-names: Laitinen-Fredriksson Lundstrom-Imanov
+        given-names: Gustav Olaf Yunus
+        orcid: https://orcid.org/0009-0006-5184-0810
+      - family-names: Comert
+        given-names: Hafize Gonca
+        orcid: https://orcid.org/0009-0009-3345-8783
+    year: 2026
+    url: https://arxiv.org/abs/__TBD_ARXIV_ID__
+    repository: https://arxiv.org
+    notes: arXiv preprint; replace __TBD_ARXIV_ID__ with the assigned arXiv identifier

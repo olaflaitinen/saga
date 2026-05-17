@@ -1,0 +1,59 @@
+# docker-compose.yaml
+# Brings up the SAGA runtime container with the synthetic mirror dataset
+# volume-mounted from the host. Requires Docker Compose v2.
+
+version: "3.9"
+
+services:
+  saga:
+    # Image built from the repository Dockerfile.
+    # To use a pre-built image from Docker Hub, replace 'build: .' with:
+    #   image: olaflaitinen/saga:v1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: olaflaitinen/saga:v1.0.0
+    container_name: saga-runtime
+
+    # GPU access (requires NVIDIA Container Toolkit).
+    # Remove this section if running on a CPU-only machine.
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+    # Volume mounts:
+    #   - Synthetic mirror data (downloaded from Zenodo via scripts/download_synthetic_mirror.sh)
+    #   - Configs directory (read-only, so container uses the host configurations)
+    #   - Scripts directory (read-only)
+    #   - Outputs directory (writable, for checkpoints and evaluation outputs)
+    volumes:
+      - ./data/synthetic:/workspace/data/synthetic:ro
+      - ./configs:/workspace/configs:ro
+      - ./scripts:/workspace/scripts:ro
+      - ./outputs:/workspace/outputs:rw
+
+    # Environment variables
+    environment:
+      - PYTHONPATH=/workspace/src
+      - SAGA_DATA_ROOT=/workspace/data
+      - SAGA_OUTPUT_ROOT=/workspace/outputs
+      # Set to 1 to enable verbose logging
+      - SAGA_LOG_LEVEL=INFO
+
+    # Interactive terminal support
+    stdin_open: true
+    tty: true
+
+    # Restart policy: no automatic restart; the container is run on-demand
+    restart: "no"
+
+    # Working directory inside the container
+    working_dir: /workspace
+
+    # Default command: start an interactive shell
+    command: ["/bin/bash"]

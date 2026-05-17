@@ -1,0 +1,40 @@
+# Normalize line endings to LF for all text files.
+* text=auto eol=lf
+
+# Explicitly mark binary file types so git does not attempt diff or merge.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.whl binary
+*.gz binary
+*.tar binary
+*.zip binary
+
+# Parquet files in data/synthetic/ are binary; git must not attempt to diff them.
+data/synthetic/*.parquet binary
+data/synthetic/*.parquet.* binary
+
+# Jupyter notebooks use LF and are treated as text for diff purposes.
+*.ipynb text eol=lf
+
+# Shell scripts must use LF line endings on all platforms.
+*.sh text eol=lf
+
+# YAML and TOML configuration files use LF.
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+
+# Python source files use LF.
+*.py text eol=lf
+
+# Markdown files use LF.
+*.md text eol=lf
+
+# BibTeX files use LF.
+*.bib text eol=lf
+
+# CFF files use LF.
+*.cff text eol=lf

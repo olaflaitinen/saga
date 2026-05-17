@@ -1,0 +1,61 @@
+repos:
+  # Ruff linter and import sorter
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.10
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # Black formatter
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+        language_version: python3.11
+
+  # Mypy type checker
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        args: [--strict]
+        additional_dependencies:
+          - pydantic>=2.6
+          - types-PyYAML>=6.0
+
+  # Built-in pre-commit hooks for general hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=5000]
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: detect-private-key
+
+  # Custom hook: reject any staged file containing em-dash (U+2014) or
+  # en-dash (U+2013) characters. These are prohibited by Rule 1 and Rule 2
+  # of the repository formatting standards (Section 3 of the construction prompt).
+  - repo: local
+    hooks:
+      - id: no-em-dash
+        name: Prohibit em-dash (U+2014) in all files
+        language: pygrep
+        entry: "\u2014"
+        types: [text]
+        pass_filenames: true
+      - id: no-en-dash
+        name: Prohibit en-dash (U+2013) in all files except BibTeX pages fields
+        language: pygrep
+        entry: "\u2013"
+        types: [text]
+        exclude: "^CITATION\\.bib$"
+        pass_filenames: true

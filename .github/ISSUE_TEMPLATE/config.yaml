@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: SAGA documentation
+    url: https://olaflaitinen.github.io/saga
+    about: Browse the full documentation, including the FAQ and reproducibility guide.
+  - name: Zenodo deposit
+    url: https://zenodo.org/record/10.5281/zenodo.20260287
+    about: Download the synthetic mirror dataset.

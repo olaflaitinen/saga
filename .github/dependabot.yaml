@@ -1,0 +1,48 @@
+version: 2
+updates:
+  # Scan pip dependencies weekly. Open PRs for non-major upgrades automatically.
+  # Major-version upgrades are opened but labeled "major-version-upgrade" for
+  # manual review, because they may introduce breaking API changes.
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Stockholm"
+    labels:
+      - "dependencies"
+      - "automated"
+    ignore:
+      # Pin torch major version: upgrades from 2.x to 3.x require manual review
+      - dependency-name: "torch"
+        update-types: ["version-update:semver-major"]
+      # Pin numpy major version: <2.0 required for LightGBM compatibility
+      - dependency-name: "numpy"
+        update-types: ["version-update:semver-major"]
+
+  # Scan GitHub Actions versions weekly.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Stockholm"
+    labels:
+      - "dependencies"
+      - "automated"
+      - "github-actions"
+
+  # Scan Docker base image weekly.
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Stockholm"
+    labels:
+      - "dependencies"
+      - "automated"
+      - "docker"

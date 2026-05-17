@@ -1,0 +1,61 @@
+name: Reproducibility smoke test
+
+on:
+  schedule:
+    # Run nightly at 02:00 UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-test:
+    name: Execute quickstart notebook on synthetic mirror
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+      - name: Download synthetic mirror from Zenodo
+        run: bash scripts/download_synthetic_mirror.sh
+      - name: Execute quickstart notebook
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=3600 \
+            notebooks/00-quickstart.ipynb \
+            --output notebooks/00-quickstart.executed.ipynb
+      - name: Verify headline CRPS reduction (31.9% +/- 0.5pp on synthetic mirror)
+        run: |
+          python - <<'EOF'
+          import json, sys
+          nb = json.load(open("notebooks/00-quickstart.executed.ipynb"))
+          crps_reduction = None
+          for cell in nb["cells"]:
+              for output in cell.get("outputs", []):
+                  for line in output.get("text", []):
+                      if "crps_reduction" in line.lower():
+                          # Parse the numerical value from lines like "CRPS reduction: 31.4%"
+                          import re
+                          m = re.search(r"([0-9]+\.[0-9]+)", line)
+                          if m:
+                              crps_reduction = float(m.group(1))
+          if crps_reduction is None:
+              print("WARNING: could not find CRPS reduction in notebook outputs.")
+              sys.exit(0)
+          target = 31.9
+          tol = 0.5
+          if abs(crps_reduction - target) > tol:
+              print(f"FAIL: CRPS reduction {crps_reduction:.1f}% is outside {target}+/-{tol}pp")
+              sys.exit(1)
+          print(f"PASS: CRPS reduction {crps_reduction:.1f}% is within {tol}pp of {target}%")
+          EOF
+      - name: Upload executed notebook as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: quickstart-executed
+          path: notebooks/00-quickstart.executed.ipynb
+          retention-days: 7

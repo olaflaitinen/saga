@@ -1,0 +1,8 @@
+# CODEOWNERS for the SAGA repository.
+# Every directory and file is owned by @olaflaitinen for v1.0.0.
+# As co-maintainers are onboarded, update this file to assign ownership
+# of specific subdirectories (e.g., docs/, src/saga/baselines/) to the
+# appropriate maintainers.
+# See docs/deployment/branch-protection.md for branch protection rules.
+
+* @olaflaitinen

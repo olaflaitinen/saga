@@ -1,0 +1,99 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  build-wheel:
+    name: Build Python wheel and source distribution
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install build tools
+        run: pip install build twine
+      - name: Build wheel and sdist
+        run: python -m build
+      - name: Check distribution with twine
+        run: twine check dist/*
+      - name: Compute SHA-256 checksums
+        run: sha256sum dist/* > dist/checksums.sha256
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish-pypi:
+    name: Publish to PyPI
+    needs: build-wheel
+    runs-on: ubuntu-22.04
+    environment: pypi
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Publish to PyPI (trusted publisher)
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  docker-build-push:
+    name: Build and push Docker image
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract tag version
+        id: tag
+        run: echo "VERSION=${GITHUB_REF_NAME}" >> "${GITHUB_OUTPUT}"
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            olaflaitinen/saga:${{ steps.tag.outputs.VERSION }}
+            olaflaitinen/saga:latest
+
+  github-release:
+    name: Create GitHub release
+    needs: [build-wheel, docker-build-push]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Extract changelog entry for this tag
+        id: changelog
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          python - <<'EOF'
+          import re, os
+          text = open("CHANGELOG.md").read()
+          pattern = rf"## \[{re.escape(os.environ['VERSION'])}\].*?\n(.*?)(?=\n## \[|\Z)"
+          m = re.search(pattern, text, re.DOTALL)
+          notes = m.group(1).strip() if m else "See CHANGELOG.md"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"notes<<EOF\n{notes}\nEOF\n")
+          EOF
+        env:
+          VERSION: ${{ github.ref_name }}
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.changelog.outputs.notes }}
+          files: dist/*

@@ -1,0 +1,59 @@
+name: Reproducibility question
+description: Ask a question about replicating a numerical result from the SAGA paper.
+title: "[REPRO] "
+labels: ["reproducibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for your reproducibility question. Before opening this issue, please
+        read `docs/reproducibility/quickstart.md` and `docs/data/mona-secure-environment.md`.
+
+        Important: Bit-level replication of the headline results in the manuscript
+        requires access to the protected Statistics Sweden LISA microdata under an
+        independent MONA project. Pipeline-level replication is possible using the
+        synthetic mirror dataset (Zenodo DOI 10.5281/zenodo.20260287).
+
+  - type: textarea
+    id: result
+    attributes:
+      label: Which result are you trying to reproduce?
+      description: >
+        Specify the table number, metric, horizon, and model (e.g., "Table I, CRPS,
+        h=10, SAGA: 0.318").
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps taken so far
+      description: What commands or scripts have you already run?
+    validations:
+      required: true
+
+  - type: textarea
+    id: discrepancy
+    attributes:
+      label: Discrepancy observed
+      description: What value did you obtain, and how does it differ from the manuscript?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: data_access
+    attributes:
+      label: Data access
+      options:
+        - label: I am using the synthetic mirror dataset from Zenodo (pipeline-level replication).
+        - label: I am operating inside the SCB MONA secure compute environment (bit-level replication).
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: SAGA version
+      placeholder: "1.0.0"
+    validations:
+      required: true

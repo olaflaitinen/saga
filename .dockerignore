@@ -1,0 +1,51 @@
+# Exclude files and directories that should not be copied into the Docker image.
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Test and coverage artifacts
+.coverage
+htmlcov/
+coverage.xml
+.hypothesis/
+
+# Editor artifacts
+.vscode/
+.idea/
+*.swp
+
+# Documentation build output (not needed in image)
+site/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Local data: real LISA data never enters the image
+data/real/
+
+# Pre-commit configuration (not needed at runtime)
+.pre-commit-config.yaml
+
+# Dev container configuration
+.devcontainer/

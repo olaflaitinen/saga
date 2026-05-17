@@ -1,0 +1,135 @@
+# SAGA panel data schema.
+# All parquet files (synthetic or real) must conform to this schema.
+# Validated by src/saga/data/schema.py.
+
+columns:
+  individual_id:
+    dtype: int64
+    description: Unique individual identifier (anonymized for synthetic data).
+
+  birth_year:
+    dtype: int16
+    range: [1960, 1990]
+    description: Year of birth.
+
+  age:
+    dtype: int8
+    range: [16, 64]
+    description: Age of the individual in the calendar year.
+
+  year:
+    dtype: int16
+    range: [1990, 2022]
+    description: Calendar year of the observation.
+
+  log_labor_earnings:
+    dtype: float32
+    description: Log nominal labor earnings in SEK. Zero-earnings floored at log(1)=0.
+
+  log_capital_income:
+    dtype: float32
+    description: Log nominal capital income in SEK.
+
+  log_total_transfers:
+    dtype: float32
+    description: Log total transfer payments from social insurance.
+
+  log_sickness_benefit_days:
+    dtype: float32
+    description: Log days-times-daily-benefit from sickness insurance.
+
+  log_parental_leave_days:
+    dtype: float32
+    description: Log days-times-daily-benefit from parental leave insurance.
+
+  log_unemployment_benefit_days:
+    dtype: float32
+    description: Log days-times-daily-benefit from unemployment insurance.
+
+  log_disability_pension:
+    dtype: float32
+    description: Log disability pension amount.
+
+  log_pension_income:
+    dtype: float32
+    description: Log pension income from occupational and public pension.
+
+  log_housing_supplement:
+    dtype: float32
+    description: Log housing supplement from social insurance.
+
+  employment_rate:
+    dtype: float32
+    range: [0.0, 1.0]
+    description: Fraction of the calendar year employed (weeks employed / 52).
+
+  log_employer_earnings:
+    dtype: float32
+    description: Log mean labor earnings at the primary employer.
+
+  log_employer_size:
+    dtype: float32
+    description: Log number of employees at the primary employer.
+
+  full_time_indicator:
+    dtype: float32
+    range: [0.0, 1.0]
+    description: Binary indicator for full-time employment at the primary employer.
+
+  n_employers:
+    dtype: float32
+    description: Number of distinct employers in the calendar year.
+
+  log_spousal_earnings:
+    dtype: float32
+    description: Log labor earnings of the spouse/cohabiting partner (0 if single).
+
+  occupation:
+    dtype: int16
+    description: SSYK2012 three-digit occupation code (0 = missing/unknown).
+
+  industry:
+    dtype: int8
+    description: SNI2007 two-digit industry code (0 = missing/unknown).
+
+  region:
+    dtype: int8
+    range: [0, 21]
+    description: Swedish county code (1-21; 0 = missing/unknown).
+
+  education_level:
+    dtype: int8
+    range: [0, 4]
+    description: Sun2000Niva education level (0 = missing, 1-4 = compulsory through research).
+
+  field_of_study:
+    dtype: int8
+    description: Sun2000Inr one-digit field of study code (0 = missing/unknown).
+
+  sex:
+    dtype: int8
+    range: [0, 2]
+    description: Sex (1 = female, 2 = male, 0 = missing).
+
+  country_of_birth_group:
+    dtype: int8
+    range: [0, 8]
+    description: Country of birth group (0 = missing, 1-8 = aggregated groups).
+
+  marital_status:
+    dtype: int8
+    range: [0, 5]
+    description: Marital status code (0=missing, 1=single, 2=married, 3=cohabiting, 4=divorced, 5=widowed).
+
+  n_children:
+    dtype: int8
+    range: [0, 4]
+    description: Bucketed number of children under 18 (4 = 3 or more).
+
+  age_youngest_child:
+    dtype: int8
+    range: [0, 5]
+    description: Bucketed age of youngest child (0=none, 1=infant<2, 2=preschool, 3=school, 4=teen, 5=adult).
+
+missing_columns_prefix: "missing_"
+global_missing_flag_column: "any_missing"

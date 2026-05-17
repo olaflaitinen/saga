@@ -7,10 +7,7 @@ dtype constraints, and value range constraints for the 15 continuous features,
 
 from __future__ import annotations
 
-from typing import Any
-
 import pandas as pd
-
 
 _REQUIRED_CONTINUOUS_COLUMNS: list[str] = [
     "log_labor_earnings",
@@ -66,16 +63,15 @@ def validate_schema(df: pd.DataFrame) -> list[str]:
     if missing_cols:
         errors.append(f"Missing required columns: {sorted(missing_cols)}")
 
-    if "age" in df.columns:
-        if df["age"].lt(16).any() or df["age"].gt(64).any():
-            errors.append("Column 'age' contains values outside [16, 64].")
+    if "age" in df.columns and (df["age"].lt(16).any() or df["age"].gt(64).any()):
+        errors.append("Column 'age' contains values outside [16, 64].")
 
-    if "year" in df.columns:
-        if df["year"].lt(1990).any() or df["year"].gt(2022).any():
-            errors.append("Column 'year' contains values outside [1990, 2022].")
+    if "year" in df.columns and (df["year"].lt(1990).any() or df["year"].gt(2022).any()):
+        errors.append("Column 'year' contains values outside [1990, 2022].")
 
-    if "employment_rate" in df.columns:
-        if df["employment_rate"].lt(0).any() or df["employment_rate"].gt(1).any():
-            errors.append("Column 'employment_rate' contains values outside [0, 1].")
+    if "employment_rate" in df.columns and (
+        df["employment_rate"].lt(0).any() or df["employment_rate"].gt(1).any()
+    ):
+        errors.append("Column 'employment_rate' contains values outside [0, 1].")
 
     return errors

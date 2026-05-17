@@ -91,4 +91,4 @@ class GKOSBaseline:
             )
             permanent = self.rho * permanent + perm_shock
             simulated = simulated + permanent + trans_shock
-        return np.quantile(simulated, quantile_levels)
+        return np.array([np.quantile(simulated, q) for q in quantile_levels])

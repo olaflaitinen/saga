@@ -61,6 +61,4 @@ class PositionalEncoder(nn.Module):
         """
         age_idx = age - self.age_min
         year_idx = year - self.year_min
-        return torch.cat(
-            [self.age_embedding(age_idx), self.year_embedding(year_idx)], dim=-1
-        )
+        return torch.cat([self.age_embedding(age_idx), self.year_embedding(year_idx)], dim=-1)

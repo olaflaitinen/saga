@@ -8,7 +8,6 @@ Verifies that:
 
 import numpy as np
 import pytest
-
 from saga.conformal.adaptive_temporal import AdaptiveTemporalConformalCalibrator
 
 
@@ -41,8 +40,7 @@ class TestAdaptiveTemporalConformalCalibrator:
         lo, hi = calibrator.predict_interval(q_lower_test, q_upper_test, horizon=5)
         coverage = float(((y_test >= lo) & (y_test <= hi)).mean())
         assert coverage >= 0.88, (
-            f"Marginal coverage {coverage:.3f} is below 0.88, "
-            "which is far below 90% nominal."
+            f"Marginal coverage {coverage:.3f} is below 0.88, " "which is far below 90% nominal."
         )
 
     def test_theorem2_bound_numerical(self) -> None:
@@ -72,5 +70,5 @@ class TestAdaptiveTemporalConformalCalibrator:
         y = rng.normal(0, 1, 100)
         calibrator = AdaptiveTemporalConformalCalibrator(lipschitz_constants={})
         calibrator.calibrate(y - 0.5, y + 0.5, y, horizon=7)
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="Lipschitz constant"):
             calibrator.theorem2_bound(horizon=7)

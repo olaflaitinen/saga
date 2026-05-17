@@ -10,8 +10,7 @@ Right-censored (masked) positions are excluded from the loss.
 from __future__ import annotations
 
 import torch
-import torch.nn.functional as F
-
+import torch.nn.functional as F  # noqa: N812
 
 _DEFAULT_QUANTILE_LEVELS: tuple[float, ...] = (0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95)
 

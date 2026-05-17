@@ -104,7 +104,7 @@ class SagaConfig:
         )
 
     @classmethod
-    def from_yaml(cls, path: str | Path) -> "SagaConfig":
+    def from_yaml(cls, path: str | Path) -> SagaConfig:
         """Load a SagaConfig from a YAML file.
 
         Args:
@@ -122,6 +122,6 @@ class SagaConfig:
             raise FileNotFoundError(f"Config file not found: {path}")
         with path.open() as fh:
             data = yaml.safe_load(fh) or {}
-        valid_fields = {f.name for f in cls.__dataclass_fields__.values()}  # type: ignore[attr-defined]
+        valid_fields = {f.name for f in cls.__dataclass_fields__.values()}
         filtered = {k: v for k, v in data.items() if k in valid_fields}
         return cls(**filtered)

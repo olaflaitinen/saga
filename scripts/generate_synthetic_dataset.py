@@ -66,7 +66,7 @@ FIXED_EFFECT_STD: float = 0.55
 _AGE_KNOTS   = np.array([16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 64], dtype=float)
 _AGE_PROFILE = np.array([0.00, 0.15, 0.35, 0.52, 0.64, 0.72, 0.76, 0.75, 0.70, 0.60, 0.45])
 
-# Education fixed effects on log earnings (levels 1–4)
+# Education fixed effects on log earnings (levels 1-4)
 EDUCATION_EFFECT = {0: -0.20, 1: 0.00, 2: 0.15, 3: 0.35, 4: 0.60}
 # Sex fixed effects (1=female, 2=male)
 SEX_EFFECT = {0: 0.00, 1: -0.12, 2: 0.12}

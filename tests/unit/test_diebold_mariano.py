@@ -5,8 +5,6 @@ lower than baseline losses, and that the p-value is below 0.05 for large samples
 """
 
 import numpy as np
-import pytest
-
 from saga.evaluation.diebold_mariano import DieboldMarianoTest, newey_west_variance
 
 

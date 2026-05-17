@@ -46,7 +46,7 @@ class LightGBMBaseline:
 
     def fit(
         self,
-        X_train: np.ndarray,
+        x_train: np.ndarray,
         y_train: dict[int, np.ndarray],
         num_boost_round: int = 500,
     ) -> None:
@@ -58,6 +58,7 @@ class LightGBMBaseline:
             num_boost_round: Number of boosting rounds (default 500).
         """
         for h in self.horizons:
+            x = x_train
             if h not in y_train:
                 continue
             for q in self.quantile_levels:
@@ -67,20 +68,18 @@ class LightGBMBaseline:
                     "verbose": -1,
                     **self.lgb_params,
                 }
-                dataset = lgb.Dataset(X_train, label=y_train[h])
-                self.models[(h, q)] = lgb.train(
-                    params, dataset, num_boost_round=num_boost_round
-                )
+                dataset = lgb.Dataset(x, label=y_train[h])
+                self.models[(h, q)] = lgb.train(params, dataset, num_boost_round=num_boost_round)
 
     def predict_quantiles(
         self,
-        X: np.ndarray,
+        x: np.ndarray,
         horizon: int,
     ) -> np.ndarray:
         """Predict quantiles at a given horizon.
 
         Args:
-            X: Feature matrix of shape (n, n_features).
+            x: Feature matrix of shape (n, n_features).
             horizon: Forecast horizon h.
 
         Returns:
@@ -94,5 +93,5 @@ class LightGBMBaseline:
             key = (horizon, q)
             if key not in self.models:
                 raise RuntimeError(f"Model not fitted for horizon {horizon}, quantile {q}.")
-            preds.append(self.models[key].predict(X))
+            preds.append(self.models[key].predict(x))
         return np.stack(preds, axis=-1)

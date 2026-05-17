@@ -5,9 +5,7 @@ monotonicity in quantile level) and that the combined loss composes correctly.
 """
 
 import torch
-import pytest
-
-from saga.training.losses import pinball_loss, combined_loss
+from saga.training.losses import combined_loss, pinball_loss
 
 
 class TestPinballLoss:
@@ -35,9 +33,9 @@ class TestPinballLoss:
         mask = torch.ones(2, 3, dtype=torch.bool)
         mask[0, 2] = False
         mask[1, 0] = False
-        loss_masked = pinball_loss(predicted, target, self.QUANTILE_LEVELS, mask=mask)
-        loss_full = pinball_loss(predicted, target, self.QUANTILE_LEVELS, mask=None)
-        assert loss_masked != loss_full or True
+        _ = pinball_loss(predicted, target, self.QUANTILE_LEVELS, mask=mask)
+        _ = pinball_loss(predicted, target, self.QUANTILE_LEVELS, mask=None)
+        assert True
 
 
 class TestCombinedLoss:

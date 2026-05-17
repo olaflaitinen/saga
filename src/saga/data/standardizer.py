@@ -11,7 +11,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
 _CONTINUOUS_COLUMNS: list[str] = [
     "log_labor_earnings",
     "log_capital_income",
@@ -45,7 +44,7 @@ class YearSpecificStandardizer:
         self.stds: dict[int, np.ndarray] = {}
         self.columns = _CONTINUOUS_COLUMNS
 
-    def fit(self, df: pd.DataFrame) -> "YearSpecificStandardizer":
+    def fit(self, df: pd.DataFrame) -> YearSpecificStandardizer:
         """Fit year-specific means and standard deviations from the training data.
 
         Args:
@@ -56,8 +55,8 @@ class YearSpecificStandardizer:
         """
         for year, group in df.groupby("year"):
             vals = group[self.columns].values.astype(np.float32)
-            self.means[int(year)] = vals.mean(axis=0)
-            self.stds[int(year)] = vals.std(axis=0) + 1e-8
+            self.means[int(year)] = vals.mean(axis=0)  # type: ignore[arg-type]
+            self.stds[int(year)] = vals.std(axis=0) + 1e-8  # type: ignore[arg-type]
         return self
 
     def transform(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -80,9 +79,7 @@ class YearSpecificStandardizer:
             mask = df["year"] == year
             mean = self.means.get(int(year), global_mean)
             std = self.stds.get(int(year), global_std)
-            df.loc[mask, self.columns] = (
-                df.loc[mask, self.columns].values - mean
-            ) / std
+            df.loc[mask, self.columns] = (df.loc[mask, self.columns].values - mean) / std
         return df
 
     def save(self, path: str | Path) -> None:
@@ -99,7 +96,7 @@ class YearSpecificStandardizer:
         )
 
     @classmethod
-    def load(cls, path: str | Path) -> "YearSpecificStandardizer":
+    def load(cls, path: str | Path) -> YearSpecificStandardizer:
         """Load a fitted standardizer from a .npz file.
 
         Args:

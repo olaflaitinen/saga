@@ -45,7 +45,9 @@ class TransformerDecoder(nn.Module):
         )
         self.final_norm = nn.LayerNorm(model_dim)
 
-    def forward(self, x: torch.Tensor, key_padding_mask: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(
+        self, x: torch.Tensor, key_padding_mask: torch.Tensor | None = None
+    ) -> torch.Tensor:
         """Pass token sequence through all decoder blocks.
 
         Args:
@@ -57,4 +59,4 @@ class TransformerDecoder(nn.Module):
         """
         for block in self.blocks:
             x = block(x, key_padding_mask)
-        return self.final_norm(x)
+        return self.final_norm(x)  # type: ignore[no-any-return]

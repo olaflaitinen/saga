@@ -7,8 +7,7 @@ Each ablation is a SagaConfig variant with one component disabled or replaced.
 from __future__ import annotations
 
 from dataclasses import dataclass
-
-from saga.config import SagaConfig
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -25,7 +24,7 @@ class AblationSpec:
     label: str
     description: str
     crps_manuscript: float
-    config_overrides: dict
+    config_overrides: dict[str, Any]
 
 
 _ABLATION_SPECS: list[AblationSpec] = [

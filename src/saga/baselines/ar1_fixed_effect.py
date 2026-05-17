@@ -42,10 +42,10 @@ class AR1FixedEffectBaseline:
         Returns:
             Array of shape (len(quantile_levels),) with forecast quantiles.
         """
-        from scipy.stats import norm
+        from scipy.stats import norm  # type: ignore
 
         y_last = float(conditioning_log_earnings[-1])
-        mean_h = (self.rho ** horizon) * y_last
+        mean_h = (self.rho**horizon) * y_last
         var_h = self.sigma2 * (1.0 - self.rho ** (2 * horizon)) / (1.0 - self.rho**2 + 1e-12)
         std_h = max(float(var_h) ** 0.5, 1e-6)
         return np.array([norm.ppf(q, loc=mean_h, scale=std_h) for q in quantile_levels])

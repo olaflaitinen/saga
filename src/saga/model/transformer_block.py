@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn.functional as F  # noqa: N812
 
 from saga.model.attention import CausalMultiHeadAttention
 
@@ -87,7 +87,9 @@ class TransformerBlock(nn.Module):
         self.ffn_drop = nn.Dropout(p=dropout)
         self.stoch2 = StochasticDepth(stochastic_depth_rate)
 
-    def forward(self, x: torch.Tensor, key_padding_mask: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(
+        self, x: torch.Tensor, key_padding_mask: torch.Tensor | None = None
+    ) -> torch.Tensor:
         """Forward pass through the transformer decoder block.
 
         Args:
@@ -101,5 +103,4 @@ class TransformerBlock(nn.Module):
         x = x + self.stoch1(attn_out)
 
         ffn_out = self.ffn_fc2(self.ffn_drop(F.gelu(self.ffn_fc1(self.norm2(x)))))
-        x = x + self.stoch2(ffn_out)
-        return x
+        return x + self.stoch2(ffn_out)  # type: ignore[no-any-return]

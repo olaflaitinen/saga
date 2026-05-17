@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import pandas as pd
 
-
 _SPLIT_COHORT_RANGES: dict[str, tuple[int, int]] = {
     "train": (1960, 1979),
     "calibration": (1980, 1982),

@@ -11,7 +11,7 @@ import math
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn.functional as F  # noqa: N812
 
 
 class CausalMultiHeadAttention(nn.Module):
@@ -37,9 +37,9 @@ class CausalMultiHeadAttention(nn.Module):
         dropout: float = 0.1,
     ) -> None:
         super().__init__()
-        assert model_dim % num_heads == 0, (
-            f"model_dim {model_dim} must be divisible by num_heads {num_heads}"
-        )
+        assert (
+            model_dim % num_heads == 0
+        ), f"model_dim {model_dim} must be divisible by num_heads {num_heads}"
         self.model_dim = model_dim
         self.num_heads = num_heads
         self.head_dim = model_dim // num_heads
@@ -49,19 +49,21 @@ class CausalMultiHeadAttention(nn.Module):
         self.out_proj = nn.Linear(model_dim, model_dim, bias=True)
         self.attn_dropout = nn.Dropout(p=dropout)
 
-    def forward(self, x: torch.Tensor, key_padding_mask: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(
+        self, x: torch.Tensor, key_padding_mask: torch.Tensor | None = None
+    ) -> torch.Tensor:
         """Compute causally-masked multi-head self-attention.
 
         Args:
             x: Input tensor of shape (batch, seq_len, model_dim).
-            key_padding_mask: Optional boolean tensor of shape (batch, seq_len) where True
-                indicates that the corresponding position should be masked (padded). Used to
-                mask out padding tokens at the end of short sequences.
+            key_padding_mask: Optional boolean tensor of shape (batch, seq_len) where
+                True indicates that the corresponding position should be masked (padded).
+                Used to mask out padding tokens at the end of short sequences.
 
         Returns:
             Output tensor of shape (batch, seq_len, model_dim).
         """
-        B, T, C = x.shape
+        B, T, C = x.shape  # noqa: N806
         qkv = self.qkv_proj(x).reshape(B, T, 3, self.num_heads, self.head_dim)
         qkv = qkv.permute(2, 0, 3, 1, 4)
         q, k, v = qkv.unbind(0)
@@ -83,4 +85,4 @@ class CausalMultiHeadAttention(nn.Module):
 
         out = torch.matmul(attn_weights, v)
         out = out.transpose(1, 2).contiguous().reshape(B, T, C)
-        return self.out_proj(out)
+        return self.out_proj(out)  # type: ignore[no-any-return]

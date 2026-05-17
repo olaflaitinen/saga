@@ -11,7 +11,6 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-
 _EMBEDDING_SPECS: list[tuple[str, int, int]] = [
     ("occupation", 430, 24),
     ("industry", 100, 16),
@@ -58,8 +57,5 @@ class CategoricalSubvectorEncoder(nn.Module):
         Returns:
             Tensor of shape (..., output_dim) with all embeddings concatenated.
         """
-        parts = [
-            self.embeddings[name](features[name])
-            for name, _, _ in _EMBEDDING_SPECS
-        ]
+        parts = [self.embeddings[name](features[name]) for name, _, _ in _EMBEDDING_SPECS]
         return torch.cat(parts, dim=-1)

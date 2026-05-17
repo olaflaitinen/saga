@@ -5,11 +5,9 @@ from_yaml round-trips correctly.
 """
 
 import tempfile
-from pathlib import Path
 
 import pytest
 import yaml
-
 from saga.config import SagaConfig
 
 

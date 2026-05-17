@@ -10,6 +10,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
+from saga.config import SagaConfig
 from saga.tokenization.categorical import CategoricalSubvectorEncoder
 from saga.tokenization.continuous import ContinuousSubvectorEncoder
 from saga.tokenization.missingness import MissingnessSubvectorEncoder
@@ -30,7 +31,7 @@ class TokenAssembler(nn.Module):
         projection: Final linear layer (252 -> model_dim, with bias).
     """
 
-    def __init__(self, config: "SagaConfig") -> None:  # noqa: F821
+    def __init__(self, config: SagaConfig) -> None:
         super().__init__()
         self.continuous_encoder = ContinuousSubvectorEncoder(
             n_features=15,
@@ -81,4 +82,4 @@ class TokenAssembler(nn.Module):
         pos_vec = self.positional_encoder(age, year)
 
         pre_proj = torch.cat([cont_vec, cat_vec, miss_vec, pos_vec], dim=-1)
-        return self.projection(pre_proj)
+        return self.projection(pre_proj)  # type: ignore[no-any-return]

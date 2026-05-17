@@ -37,4 +37,4 @@ class ContinuousSubvectorEncoder(nn.Module):
         Returns:
             Tensor of shape (..., output_dim).
         """
-        return self.projection(x)
+        return self.projection(x)  # type: ignore[no-any-return]

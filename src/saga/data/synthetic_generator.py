@@ -13,9 +13,7 @@ real LISA panel.
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
-
 
 _SYNTHETIC_MIRROR_DOI: str = "10.5281/zenodo.20260287"
 _N_INDIVIDUALS: int = 500_000

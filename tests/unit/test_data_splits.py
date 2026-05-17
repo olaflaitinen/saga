@@ -5,8 +5,6 @@ Verifies that the split boundaries exactly match the manuscript specification:
 """
 
 import pandas as pd
-import pytest
-
 from saga.data.splits import assign_split, split_panel
 
 

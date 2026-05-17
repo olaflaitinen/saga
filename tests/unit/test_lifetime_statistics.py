@@ -6,11 +6,10 @@ against known analytical values and the manuscript Table IV figures.
 
 import numpy as np
 import pytest
-
 from saga.evaluation.lifetime_statistics import (
     gini_coefficient,
-    top_income_share,
     lifetime_distribution_statistics,
+    top_income_share,
 )
 
 

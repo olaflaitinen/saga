@@ -7,20 +7,12 @@ accumulating to float32, gradient clipping, early stopping on validation pinball
 
 from __future__ import annotations
 
-import logging
-from pathlib import Path
-from typing import Any
-
-import torch
+import structlog
 import torch.nn as nn
-from torch import GradScaler, autocast
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingLR, LinearLR, SequentialLR
 
-import structlog
-
 from saga.config import SagaConfig
-from saga.training.losses import combined_loss
 
 log = structlog.get_logger(__name__)
 
@@ -35,14 +27,8 @@ def build_optimizer(model: nn.Module, config: SagaConfig) -> AdamW:
     Returns:
         Configured AdamW optimizer.
     """
-    decay_params = [
-        p for n, p in model.named_parameters()
-        if p.requires_grad and p.ndim >= 2
-    ]
-    no_decay_params = [
-        p for n, p in model.named_parameters()
-        if p.requires_grad and p.ndim < 2
-    ]
+    decay_params = [p for n, p in model.named_parameters() if p.requires_grad and p.ndim >= 2]
+    no_decay_params = [p for n, p in model.named_parameters() if p.requires_grad and p.ndim < 2]
     return AdamW(
         [
             {"params": decay_params, "weight_decay": config.weight_decay},
@@ -63,9 +49,7 @@ def build_scheduler(optimizer: AdamW, config: SagaConfig) -> SequentialLR:
     Returns:
         SequentialLR combining linear warmup and cosine decay.
     """
-    warmup = LinearLR(
-        optimizer, start_factor=1e-4, end_factor=1.0, total_iters=config.warmup_steps
-    )
+    warmup = LinearLR(optimizer, start_factor=1e-4, end_factor=1.0, total_iters=config.warmup_steps)
     cosine = CosineAnnealingLR(
         optimizer, T_max=config.total_steps - config.warmup_steps, eta_min=0.0
     )

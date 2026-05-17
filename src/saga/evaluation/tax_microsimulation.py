@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import numpy as np
 
-
 _DEFAULT_SCHEDULE: dict[str, float] = {
     "municipal_tax_rate": 0.324,
     "state_income_tax_rate": 0.20,
@@ -77,7 +76,7 @@ def effective_average_tax_rate(
         Lifetime AETR: total lifetime tax / total lifetime gross earnings.
     """
     taxes = annual_tax(gross_earnings_sek, schedule)
-    total_gross = float(gross_earnings_sek.sum())
+    total_gross = float(np.asarray(gross_earnings_sek).sum())
     if total_gross <= 0:
         return 0.0
-    return float(taxes.sum()) / total_gross
+    return float(np.asarray(taxes).sum()) / total_gross

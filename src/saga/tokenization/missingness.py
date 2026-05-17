@@ -40,4 +40,4 @@ class MissingnessSubvectorEncoder(nn.Module):
         Returns:
             Tensor of shape (..., output_dim).
         """
-        return self.projection(mask)
+        return self.projection(mask)  # type: ignore[no-any-return]

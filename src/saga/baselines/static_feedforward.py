@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn.functional as F  # noqa: N812
 
 
 class StaticFeedForwardBaseline(nn.Module):
@@ -35,9 +35,7 @@ class StaticFeedForwardBaseline(nn.Module):
     ) -> None:
         super().__init__()
         dims = [input_dim] + [hidden_dim] * 5
-        self.layers = nn.ModuleList(
-            [nn.Linear(dims[i], dims[i + 1]) for i in range(5)]
-        )
+        self.layers = nn.ModuleList([nn.Linear(dims[i], dims[i + 1]) for i in range(5)])
         self.drop = nn.Dropout(p=dropout)
         self.point_head = nn.Linear(hidden_dim, 1)
         self.quantile_head = nn.Linear(hidden_dim, n_quantiles)

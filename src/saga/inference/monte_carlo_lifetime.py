@@ -13,7 +13,6 @@ Parameters from the manuscript:
 from __future__ import annotations
 
 import numpy as np
-import torch
 import torch.nn as nn
 
 
@@ -72,7 +71,7 @@ class LifetimeMonteCarloAggregator:
 
     def aggregate(
         self,
-        conditioning_panel: "np.ndarray",
+        conditioning_panel: np.ndarray,
         forecast_ages: list[int],
         device: str = "cpu",
     ) -> np.ndarray:

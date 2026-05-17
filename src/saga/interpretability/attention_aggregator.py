@@ -6,9 +6,11 @@ attention heatmap over the conditioning window for each individual.
 
 from __future__ import annotations
 
+from typing import Callable
+
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
 
 from saga.model.saga_model import SagaModel
 
@@ -32,18 +34,21 @@ class AttentionAggregator:
             raise ValueError(f"aggregation must be 'mean' or 'max', got '{aggregation}'.")
         self.model = model
         self.aggregation = aggregation
-        self._hooks: list[torch.utils.hooks.RemovableHook] = []  # type: ignore[type-arg]
+        self._hooks: list[torch.utils.hooks.RemovableHandle] = []
         self._attention_weights: list[torch.Tensor] = []
 
-    def _make_hook(self) -> "callable":  # type: ignore[type-arg]
-        def hook(module: nn.Module, input: tuple, output: torch.Tensor) -> None:
+    def _make_hook(self) -> Callable[[nn.Module, tuple[torch.Tensor, ...], torch.Tensor], None]:
+        def hook(
+            module: nn.Module, input: tuple[torch.Tensor, ...], output: torch.Tensor
+        ) -> None:
             self._attention_weights.append(output.detach().cpu())
+
         return hook
 
     def aggregate(
         self,
         continuous: torch.Tensor,
-        categorical: "dict[str, torch.Tensor]",
+        categorical: dict[str, torch.Tensor],
         missingness: torch.Tensor,
         age: torch.Tensor,
         year: torch.Tensor,
@@ -69,8 +74,5 @@ class AttentionAggregator:
                 "No attention weights captured. Register hooks before calling aggregate()."
             )
         stacked = torch.stack(self._attention_weights, dim=0)
-        if self.aggregation == "mean":
-            aggregated = stacked.mean(dim=0)
-        else:
-            aggregated = stacked.amax(dim=0)
+        aggregated = stacked.mean(dim=0) if self.aggregation == "mean" else stacked.amax(dim=0)
         return aggregated.numpy()

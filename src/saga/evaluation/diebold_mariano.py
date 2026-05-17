@@ -66,7 +66,7 @@ class DieboldMarianoTest:
         Returns:
             Tuple of (dm_statistic, two_sided_p_value).
         """
-        from scipy.stats import norm
+        from scipy.stats import norm  # type: ignore
 
         d = loss_baseline - loss_model
         d_bar = d.mean()

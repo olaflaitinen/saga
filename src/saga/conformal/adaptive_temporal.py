@@ -13,6 +13,7 @@ Reference values from the manuscript (h=10):
 from __future__ import annotations
 
 import math
+from typing import ClassVar
 
 import numpy as np
 
@@ -33,7 +34,7 @@ class AdaptiveTemporalConformalCalibrator(SplitConformalCalibrator):
             Defaults to the manuscript value {10: 0.65} if not provided.
     """
 
-    _MANUSCRIPT_LIPSCHITZ: dict[int, float] = {10: 0.65}
+    _MANUSCRIPT_LIPSCHITZ: ClassVar[dict[int, float]] = {10: 0.65}
 
     def __init__(
         self,

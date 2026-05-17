@@ -9,8 +9,6 @@ tests/unit/test_saga_model_forward.py.
 
 from __future__ import annotations
 
-from dataclasses import asdict
-
 import torch
 import torch.nn as nn
 
@@ -47,9 +45,7 @@ class SagaModel(nn.Module):
             stochastic_depth_rate=self.config.stochastic_depth_rate,
         )
         self.point_head = PointHead(self.config.model_dim)
-        self.quantile_head = QuantileHead(
-            self.config.model_dim, len(self.config.quantile_levels)
-        )
+        self.quantile_head = QuantileHead(self.config.model_dim, len(self.config.quantile_levels))
 
     def forward(
         self,

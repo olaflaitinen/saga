@@ -7,10 +7,8 @@ providing an immediate guard against accidental architecture drift.
 
 import pytest
 import torch
-
 from saga.config import SagaConfig
 from saga.model.saga_model import SagaModel
-
 
 _HEADLINE_PARAMETER_COUNT: int = 10_872_960
 _PARAMETER_COUNT_TOLERANCE: int = 50_000
@@ -33,7 +31,6 @@ def _make_batch(
     seq_len: int = 10,
     config: SagaConfig | None = None,
 ) -> dict:
-    cfg = config or SagaConfig()
     return {
         "continuous": torch.zeros(batch_size, seq_len, 15),
         "categorical": {
@@ -71,17 +68,20 @@ class TestSagaModelOutputShapes:
     def test_point_head_shape(self, model: SagaModel, config: SagaConfig) -> None:
         batch = _make_batch(batch_size=2, seq_len=10, config=config)
         point_preds, _ = model(**batch)
-        assert point_preds.shape == (2, 10), (
-            f"Expected point_preds shape (2, 10), got {point_preds.shape}."
-        )
+        assert point_preds.shape == (
+            2,
+            10,
+        ), f"Expected point_preds shape (2, 10), got {point_preds.shape}."
 
     def test_quantile_head_shape(self, model: SagaModel, config: SagaConfig) -> None:
         batch = _make_batch(batch_size=2, seq_len=10, config=config)
         _, quantile_preds = model(**batch)
         n_q = len(config.quantile_levels)
-        assert quantile_preds.shape == (2, 10, n_q), (
-            f"Expected quantile_preds shape (2, 10, {n_q}), got {quantile_preds.shape}."
-        )
+        assert quantile_preds.shape == (
+            2,
+            10,
+            n_q,
+        ), f"Expected quantile_preds shape (2, 10, {n_q}), got {quantile_preds.shape}."
 
     def test_single_token_forward(self, model: SagaModel, config: SagaConfig) -> None:
         batch = _make_batch(batch_size=1, seq_len=1, config=config)

@@ -30,7 +30,7 @@ def gini_coefficient(x: np.ndarray) -> float:
     x_sorted = np.sort(x)
     n = len(x_sorted)
     cumsum = np.cumsum(x_sorted)
-    return float((2 * (np.arange(1, n + 1) * x_sorted).sum() / (n * cumsum[-1]) - (n + 1) / n))
+    return float(2 * (np.arange(1, n + 1) * x_sorted).sum() / (n * cumsum[-1]) - (n + 1) / n)
 
 
 def top_income_share(x: np.ndarray, percentile: float = 99.0) -> float:

@@ -5,14 +5,12 @@ The headline manuscript results are cross-checked as integration-level smoke tes
 """
 
 import numpy as np
-import pytest
-
 from saga.evaluation.metrics_probabilistic import (
     crps_quantile,
-    mae,
-    rmse,
-    picp,
     crps_reduction_vs_baseline,
+    mae,
+    picp,
+    rmse,
 )
 
 
@@ -41,9 +39,9 @@ class TestManuscriptCRPSReduction:
         crps_saga = 0.318
         crps_gkos = 0.467
         reduction = crps_reduction_vs_baseline(crps_saga, crps_gkos)
-        assert abs(reduction - 0.319) < 0.001, (
-            f"Expected CRPS reduction approximately 0.319, got {reduction:.4f}."
-        )
+        assert (
+            abs(reduction - 0.319) < 0.001
+        ), f"Expected CRPS reduction approximately 0.319, got {reduction:.4f}."
 
     def test_crps_reduction_h20(self) -> None:
         crps_saga_h20 = 0.318 * (1.0 - 0.412)

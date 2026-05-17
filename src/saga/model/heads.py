@@ -34,7 +34,7 @@ class PointHead(nn.Module):
         Returns:
             Point predictions of shape (batch, seq_len).
         """
-        return self.linear(hidden).squeeze(-1)
+        return self.linear(hidden).squeeze(-1)  # type: ignore[no-any-return]
 
 
 class QuantileHead(nn.Module):
@@ -55,7 +55,7 @@ class QuantileHead(nn.Module):
         self.linear = nn.Linear(model_dim, n_quantiles)
 
     def forward(self, hidden: torch.Tensor) -> torch.Tensor:
-        """Produce quantile predictions.
+        """Produce multi-quantile predictions.
 
         Args:
             hidden: Hidden state tensor of shape (batch, seq_len, model_dim).
@@ -63,4 +63,4 @@ class QuantileHead(nn.Module):
         Returns:
             Quantile predictions of shape (batch, seq_len, n_quantiles).
         """
-        return self.linear(hidden)
+        return self.linear(hidden)  # type: ignore[no-any-return]

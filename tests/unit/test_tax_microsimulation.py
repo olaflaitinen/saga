@@ -6,7 +6,6 @@ including the breakpoint threshold and the social security cap.
 
 import numpy as np
 import pytest
-
 from saga.evaluation.tax_microsimulation import annual_tax, effective_average_tax_rate
 
 

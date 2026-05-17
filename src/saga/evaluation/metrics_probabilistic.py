@@ -78,9 +78,7 @@ def picp(
     return float(((y_true >= lower) & (y_true <= upper)).mean())
 
 
-def crps_reduction_vs_baseline(
-    crps_model: float, crps_baseline: float
-) -> float:
+def crps_reduction_vs_baseline(crps_model: float, crps_baseline: float) -> float:
     """Compute the CRPS reduction of a model relative to a baseline.
 
     Args:

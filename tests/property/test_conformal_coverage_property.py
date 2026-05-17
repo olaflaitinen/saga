@@ -5,10 +5,8 @@ holds for a wide range of synthetic calibration and test distributions.
 """
 
 import numpy as np
-import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
-
 from saga.conformal.split_conformal import SplitConformalCalibrator
 
 

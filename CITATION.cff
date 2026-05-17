@@ -10,7 +10,7 @@ version: 1.0.0
 date-released: "2026-05-18"
 license: Apache-2.0
 repository-code: https://github.com/olaflaitinen/saga
-doi: 10.5281/zenodo.20260287
+doi: 10.5281/zenodo.20260366
 url: https://github.com/olaflaitinen/saga
 abstract: >
   SAGA is a sequence-adaptive generative transformer for multi-horizon
@@ -62,8 +62,8 @@ preferred-citation:
       orcid: https://orcid.org/0009-0009-3345-8783
   journal: IEEE Transactions on Pattern Analysis and Machine Intelligence
   year: 2026
-  doi: 10.5281/zenodo.20260287
-  url: https://doi.org/10.5281/zenodo.20260287
+  doi: 10.5281/zenodo.20260366
+  url: https://doi.org/10.5281/zenodo.20260366
   identifiers:
     - type: url
       value: https://arxiv.org/abs/__TBD_ARXIV_ID__
